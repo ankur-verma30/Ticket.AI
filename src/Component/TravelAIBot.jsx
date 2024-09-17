@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   ArrowLeft,
   Mic,
@@ -9,32 +9,30 @@ import {
 } from 'lucide-react';
 import { HiOutlineSpeakerWave } from 'react-icons/hi2';
 
-
-
 export default function TravelAIBot() {
-  const [messages, setMessages] = useState(
+  const [messages, setMessages] = useState([
     {
       type: 'bot',
       content:
         "Hello! 👋\nI'm your new friend, Travel AI bot, here to help you explore the world! 🌍 Ready to plan your next adventure? 🗺️🧳",
     },
-  );
-  const [inputText, setInputText] = useState<string>('');
-  const [isRecording, setIsRecording] = useState<boolean>(false);
-  const [attachment, setAttachment] = useState<File | null>(null);
+  ]);
+  const [inputText, setInputText] = useState('');
+  const [isRecording, setIsRecording] = useState(false);
+  const [attachment, setAttachment] = useState(null);
 
   // Handle sending messages
-  const handleSend = (
-  ) => {
-    if (content || attachment) {
-      if (type === 'file' && attachment) {
+  const handleSend = () => {
+    if (inputText || attachment) {
+      if (attachment) {
         setMessages([
           ...messages,
+          { type: 'user', content: attachment.name, messageType: 'file' },
         ]);
       } else {
         setMessages([
           ...messages,
-          { type: 'user', content, messageType: type },
+          { type: 'user', content: inputText, messageType: 'text' },
         ]);
       }
 
@@ -48,7 +46,7 @@ export default function TravelAIBot() {
           {
             type: 'bot',
             content:
-              "Thanks for your message! How can I assist you with your travel plans?",
+              'Thanks for your message! How can I assist you with your travel plans?',
           },
         ]);
       }, 1000);
@@ -139,7 +137,7 @@ export default function TravelAIBot() {
                     <p className="text-xs text-gray-500 mt-1">🎤 Audio message</p>
                   )}
                   {message.messageType === 'file' && (
-                    <p className="text-xs text-gray-500 mt-1">📎 {message.fileName}</p>
+                    <p className="text-xs text-gray-500 mt-1">📎 {message.content}</p>
                   )}
                 </div>
               </div>
@@ -152,7 +150,7 @@ export default function TravelAIBot() {
             className="flex w-full text-black items-center space-x-2"
             onSubmit={(e) => {
               e.preventDefault();
-              handleSend(inputText, attachment ? 'file' : 'text');
+              handleSend();
             }}
           >
             <input

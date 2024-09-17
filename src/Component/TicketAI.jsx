@@ -10,8 +10,9 @@ const initialUsersData = {
     id: '12345',
     icon: '👨',
     blocked: false,
+    muted: false, // Add muted property
     messages: [
-      { sender: 'bot', text: 'Hello ! How can I assist you today?', time: '10:00 AM' },
+      { sender: 'bot', text: 'Hello! How can I assist you today?', time: '10:00 AM' },
       { sender: 'user', text: 'I need some help.', time: '10:01 AM' }
     ]
   }
@@ -58,6 +59,13 @@ function TicketAI() {
     setShowCard(!showCard); // Toggle card visibility
   };
 
+  // Handle "Enter" keypress to send message
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSendMessage();
+    }
+  };
+
   return (
     <div className="chat-container">
       {/* Sidebar */}
@@ -85,33 +93,34 @@ function TicketAI() {
             <div className="profile-pic">{usersData[activeUser].icon}</div><br />
             <div className="profile-name">{usersData[activeUser].name}</div>
           </div>
+
           <div className="settings-container">
-      {/* Voice Section */}
-      <div className="settings-item">
-        <div className="icon-and-label">
-          <i className="fas fa-microphone"></i>
-          <span>Voice</span>
-        </div>
-        <div className="settings-value">EnergeticYouth</div>
-      </div>
+            {/* Voice Section */}
+            <div className="settings-item">
+              <div className="icon-and-label">
+                <i className="fas fa-microphone"></i>
+                <span>Voice</span>
+              </div>
+              <div className="settings-value">EnergeticYouth</div>
+            </div>
 
-      {/* Language Section */}
-      <div className="settings-item">
-        <div className="icon-and-label">
-          <i className="fas fa-globe"></i>
-          <span>Language</span>
-        </div>
-        <div className="settings-value">English</div>
-      </div>
+            {/* Language Section */}
+            <div className="settings-item">
+              <div className="icon-and-label">
+                <i className="fas fa-globe"></i>
+                <span>Language</span>
+              </div>
+              <div className="settings-value">English</div>
+            </div>
 
-      {/* Clear Chat Section */}
-      <div className="settings-item clear-chat">
-        <div className="icon-and-label">
-          <i className="fas fa-trash"></i>
-          <span>Clear Chat</span>
-        </div>
-      </div>
-    </div>  
+            {/* Clear Chat Section */}
+            <div className="settings-item clear-chat">
+              <div className="icon-and-label">
+                <i className="fas fa-trash"></i>
+                <span>Clear Chat</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -145,6 +154,7 @@ function TicketAI() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type a message"
+              onKeyPress={handleKeyPress} // Send message on "Enter" key press
             />
             <div className="icon-buttons">
               <i className="fas fa-microphone"></i>
@@ -162,31 +172,30 @@ function TicketAI() {
 
       {/* Card that appears when icon.png is clicked */}
       {showCard && (
-  <div className="profile-card">
-  <div className="card-header">
-    <div className="card-left">
-      <img src="src\assets\images\image1.jpg" className="circle-icon-large" alt="User Icon" />
-    </div>
-    <div className="card-center">
-      <div className="card-name">Starry Sia</div>
-    </div>
-    <div className="card-right">
-      <i className="fas fa-edit"></i>
-    </div>
-  </div>
-  <div className="card-footer">
-    <div className="input-group">
-      <label htmlFor="name">Name:</label>
-      <input type="text" id="name" placeholder="Starry Sia" />
-    </div>
-    <div className="input-group">
-      <label htmlFor="id">ID:</label>
-      <input type="text" id="id" defaultValue={usersData[activeUser].id} />
-    </div>
-  </div>
-</div>
-
-)}
+        <div className="profile-card">
+          <div className="card-header">
+            <div className="card-left">
+              <img src="src\assets\images\image1.jpg" className="circle-icon-large" alt="User Icon" />
+            </div>
+            <div className="card-center">
+              <div className="card-name">Starry Sia</div>
+            </div>
+            <div className="card-right">
+              <i className="fas fa-edit"></i>
+            </div>
+          </div>
+          <div className="card-footer">
+            <div className="input-group">
+              <label htmlFor="name">Name:</label>
+              <input type="text" id="name" placeholder="Starry Sia" />
+            </div>
+            <div className="input-group">
+              <label htmlFor="id">ID:</label>
+              <input type="text" id="id" defaultValue={usersData[activeUser].id} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
